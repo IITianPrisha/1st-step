@@ -1,0 +1,18 @@
+def study_planner():
+  print("WELCOME to Prisha's tech Planner")
+
+  name = input("Enter your name: ")
+  target_hrs = int(input("Enter your target study hours: "))
+  hours_done = int(input("How many hours did you study so far? "))
+
+  remains = target_hrs - hours_done
+
+  if remains > 0:
+    print(f"\nKeep going, {name}, you still have {remains} hours left to hit your goal")
+    print("Tip: take a 10 minute break every 50 minutes to keep your focus sharp!")
+  elif remains == 0:
+    print(f"\nAmazing job, {name}! You hit your exact target today.")
+  else:
+    print(f"\nincredible dedication, {name}! You overshot your goal by {-remains} extra hours")
+
+study_planner()
