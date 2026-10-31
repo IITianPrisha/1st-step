@@ -1,0 +1,20 @@
+import time
+
+print("Brother.exe is starting...")
+time.sleep(2)
+
+print("INTELLIGENCE LOADING...")
+time.sleep(2)
+
+print("ERROR 404: Intelligence not found...")
+time.sleep(2)
+
+print("would you like to install an update!?")
+time.sleep(2)
+
+answer = input("YES or NO: ").lower()
+
+if answer == "yes":
+    print("Sorry, your device is not applicable...")
+else:
+    print("GOOD decision...no hope anyway...")
