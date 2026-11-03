@@ -1,0 +1,599 @@
+import turtle
+import time
+import winsound
+import threading
+
+
+#===================================
+#           SCREEN SETUP
+#===================================
+
+screen = turtle.Screen()
+screen.setup(1000,700)
+screen.title("PRISHA: LOADING...")
+screen.bgcolor("black")
+
+#=====================================
+#           DRAWING TOOLS
+#=====================================
+
+artist = turtle.Turtle()
+artist.hideturtle()
+artist.speed(0)
+
+text = turtle.Turtle()
+text.hideturtle()
+text.speed(0)
+
+#=====================================
+#           SOUND SYSTEM
+#=====================================
+
+sound_thread = None
+sound_running = False
+
+def stop_sound():
+    global sound_running
+    sound_running = False
+
+def play_notes(notes, repeat = False):
+    global sound_thread
+    global sound_running
+
+    stop_sound()
+    sound_running = True
+
+    def music():
+
+        global sound_running
+
+        while sound_running:
+
+            for frequency, duration in notes:
+
+                if not sound_running:
+                    break
+
+                winsound.Beep(frequency, duration)
+
+                if not repeat:
+                    break
+
+    sound_running = False
+    sound_thread = threading.Thread(target = music)
+    sound_thread.daemon = True
+    sound_thread.start()
+
+#========================================
+#           SOUND THEMES
+#========================================
+
+# Scene 1 - morning alarm
+def sound_alarm():
+
+    stop_sound()
+
+    def alarm():
+        global sound_running
+        sound_running = True
+
+        for i in range(3):
+
+            if not sound_running:
+                break
+
+            winsound.Beep(900,250)
+            winsound.Beep(600,250)
+            time.sleep(0.1)
+
+        sound_running = False
+
+    global sound_thread
+    sound_thread = threading.Thread(target = alarm)
+    sound_thread.daemon = True
+    sound_thread.start()
+
+# Scene 2 - school bus
+def sound_bus():
+
+    notes = [(220,300),(260,250),(220,300),(180,350)]
+    play_notes(notes,True)
+
+# Scene 3 - Classroom
+def sound_classroom():
+
+    notes = [(392,300),(440,300),(494,400),(440,300)]
+    play_notes(notes,True)
+
+# Scene 4 - Friends
+def sound_friends():
+
+    notes = [(523,180),(659,180),(784,250),(659,180),(523,300)]
+    play_notes(notes,True)
+
+# Scene 5 - Study
+def sound_study():
+
+    notes = [(330,350),(392,350),(440,450),(392,350),(330,500)]
+    play_notes(notes,True)
+
+# Scene 6 - Bad Day
+def sound_bad_day():
+
+    notes = [(440,400),(370,450),(330,600)]
+    play_notes(notes,False)
+
+# Scene 7 - Comeback
+def sound_comeback():
+
+    notes = [(330,200),(392,200),(440,200),(523,250),(659,300)]
+    play_notes(notes,False)
+
+# Scene 8 - 2028
+def sound_2028():
+
+    notes = [(330,250),(392,250),(440,250),(523,300),(659,350),(784,500)]
+    play_notes(notes,False)
+
+# Scene 9 - Result
+def sound_result():
+
+    notes = [(523,300),(659,300),(784,500)]
+    play_notes(notes,False)
+
+# Final scene
+def sound_final():
+
+    notes = [(392,300),(494,300),(587,300),(659,400),(784,700)]
+    play_notes(notes,True)
+
+#=====================================
+#BASIC FUNCTIONS
+#=====================================
+
+def clear_screen():
+    artist.clear()
+    text.clear()
+
+
+def write_text(message, x, y, size = 25, style = "normal"):
+    text.penup()
+    text.goto(x,y)
+    text.color("White")
+    text.write(message, align="center",font = ("Arial",size,style))
+
+
+def rectangle(x,y,width,height,color):
+    artist.penup()
+    artist.goto(x,y)
+    artist.setheading(0)
+    artist.color(color)
+    artist.begin_fill()
+
+    for i in range(2):
+        artist.forward(width)
+        artist.left(90)
+        artist.forward(height)
+        artist.left(90)
+
+    artist.end_fill()
+
+def circle(x,y,radius,color):
+    artist.penup()
+    artist.goto(x,y-radius)
+    artist.color(color)
+    artist.begin_fill()
+    artist.circle(radius)
+    artist.end_fill()
+
+
+#================================================
+#               PRISHA CHARACTER
+#================================================
+
+def draw_prisha(x,y):
+
+    # Hair
+    circle(x, y + 90, 48, "black")
+
+    # Face
+    circle(x,y + 95, 35, "peachpuff")
+
+    # Dark blue shirt
+    rectangle(x - 35, y, 70, 75, "darkblue")
+
+    # Arms
+    artist.color("peachpuff")
+    artist.pensize(12)
+
+    artist.penup()
+    artist.goto(x - 30,y + 55)
+    artist.pendown()
+    artist.goto(x - 60, y + 20)
+
+    artist.penup()
+    artist.goto(x + 30, y + 55)
+    artist.pendown()
+    artist.goto(x + 60, y + 20)
+
+    artist.pensize(1)
+
+    # legs
+    artist.color("white")
+    artist.pensize(14)
+
+    artist.penup()
+    artist.goto(x-15, y)
+    artist.pendown()
+    artist.goto(x-15,y-65)
+
+    artist.penup()
+    artist.goto(x+15, y)
+    artist.pendown()
+    artist.goto(x+15,y-65)
+
+    artist.pensize(1)
+
+#===================================
+#           CHANAKYA
+#===================================
+
+def draw_chanakya(x,y):
+    circle(x, y + 90, 48, "black")
+    circle(x, y + 95, 35, "peachpuff")
+
+    rectangle(x-35, y, 70, 75, "yellow")
+
+    artist.color("peachpuff")
+    artist.pensize(12)
+
+    artist.penup()
+    artist.goto(x-30,y+55)
+    artist.pendown()
+    artist.goto(x-60,y+20)
+
+    artist.penup()
+    artist.goto(x+30,y+55)
+    artist.pendown()
+    artist.goto(x+60,y+20)
+
+    artist.pensize(1)
+
+
+#===================================
+#               ADITYA
+#===================================
+
+def draw_aditya(x,y):
+    circle(x, y + 90, 48, "black")
+    circle(x, y + 95, 35, "peachpuff")
+
+    rectangle(x-35, y, 70, 75, "red")
+
+    artist.color("peachpuff")
+    artist.pensize(12)
+
+    artist.penup()
+    artist.goto(x-30,y+55)
+    artist.pendown()
+    artist.goto(x-60,y+20)
+
+    artist.penup()
+    artist.goto(x+30,y+55)
+    artist.pendown()
+    artist.goto(x+60,y+20)
+
+    artist.pensize(1)
+
+#========================================
+#               SCENE 1
+#               5:00 AM
+#========================================
+
+def scene1():
+
+    clear_screen()
+
+    sound_alarm()
+
+    write_text("5:00 AM",0,80,50,"bold")
+    time.sleep(1)
+    
+    write_text("MISSION: SURVIVE SCHOOL",0,10,25)
+
+    time.sleep(2)
+
+
+
+#=======================================
+#               SCENE 2
+#               BUS
+#=======================================
+
+def scene2():
+
+    clear_screen()
+
+    sound_bus()
+
+    write_text("6:30 AM",0,250,25,"bold")
+
+    # Road
+    rectangle(-500,-250,1000,150,"gray")
+
+    # Bus
+    rectangle(-300, -100, 600, 170, "darkred")
+
+    # Windows
+    for x in [-220,-80,60,200]:
+        rectangle(x,0,100,70, "lightblue")
+
+    write_text("SCHOOL BUS",0,-190,25,"bold")
+
+    draw_prisha(-20,-70)
+
+    time.sleep(2)
+
+
+#=========================================
+#               SCENE 3
+#               CLASSROOM
+#=========================================
+
+def scene3():
+
+    clear_screen()
+
+    sound_classroom()
+
+    # Board
+    rectangle(-400, 100, 800, 250, "darkgreen")
+
+    write_text("PHYSICS", 0, 260, 30, "bold")
+    write_text("F = ma",0,190,40,"bold")
+
+    draw_prisha(0,-120)
+
+    write_text("Okay...one step at a time.",0,-230,24)
+
+    time.sleep(2)
+
+
+#==================================================
+#                   SCENE 4
+#                   FRIENDS
+#==================================================
+
+def scene4():
+
+    clear_screen()
+
+    sound_friends()
+
+    draw_chanakya(250, -100)
+    draw_prisha(0,-100)
+    draw_aditya(-250,-100)
+
+    write_text("PRISHA",0,40,25,"bold")
+    write_text("CHANAKYA",250,40,20,"bold")
+    write_text("ADITYA",-250,40,20,"bold")
+
+    time.sleep(2)
+
+    clear_screen()
+
+    draw_chanakya(250,-100)
+    draw_prisha(0,-100)
+    draw_aditya(-250,-100)
+
+    write_text("Prisha: Guys, I need to study",0,250,28,"bold")
+
+    time.sleep(2)
+    clear_screen()
+    
+    draw_chanakya(250,-100)
+    draw_prisha(0,-100)
+    draw_aditya(-250,-100)
+
+    write_text("Aditya: Why so early?",0,250,26,"bold")
+
+    time.sleep(2)
+
+    clear_screen()
+
+    draw_chanakya(250,-100)
+    draw_prisha(0,-100)
+    draw_aditya(-250,-100)
+
+    write_text("Prisha: JEE isn't going to crack itself!",0,250,27,"bold")
+
+    time.sleep(2)
+    clear_screen()
+
+    draw_chanakya(250,-100)
+    draw_prisha(0,-100)
+    draw_aditya(-250,-100)
+
+    write_text("Chanakya: fine! All the best",0,250,28,"bold")
+    time.sleep(3)
+    
+#=====================================
+#               SCENE 5
+#               STUDY
+#=====================================
+
+def scene5():
+
+    clear_screen()
+
+    sound_study()
+
+    write_text("4:00 PM",0,260,30,"bold")
+
+    draw_prisha(0,-80)
+
+    # Books
+    rectangle(-300,-200,180,35,"Purple")
+    rectangle(120,-200,180,35,"dark blue")
+    rectangle(-260,-150,160,35,"Red")
+    rectangle(100,-150,170,35,"gray")
+
+    write_text("MATHS",-210,-200,20)
+    write_text("PHYSICS",210,-200,20)
+    write_text("CHEMISTRY",-180,-145,18)
+    write_text("JEE",185,-145,20)
+
+    time.sleep(3)
+
+
+#==========================================
+#                 SCENE 6
+#                 BAD DAY
+#===========================================
+
+def scene6():
+
+    clear_screen()
+
+    sound_bad_day()
+
+    write_text("TEST RESULT",0,230,35,"bold")
+    write_text("LOW SCORE",0,100,50,"bold")
+
+    draw_prisha(0,-100)
+
+    write_text("Prisha: NOT MY FINAL SCORE!!",0,-230,28,"bold")
+
+    time.sleep(4)
+
+#=======================================
+#               SCENE 7
+#               COMEBACK
+#=======================================
+
+def scene7():
+
+    clear_screen()
+
+    sound_comeback()
+
+    messages = ["LEARN","FAIL","FIX","REPEAT"]
+
+    for messages in messages:
+        clear_screen()
+
+        write_text(messages,0,0,60,"bold")
+
+        time.sleep(1)
+
+
+#=========================================
+#               SCENE 8
+#               2028
+#=========================================
+
+def scene8():
+
+    clear_screen()
+
+    sound_2028()
+
+    write_text("2026",-300,100,40,"bold")
+    time.sleep(1)
+
+    clear_screen()
+
+    write_text("2027",0,100,40,"bold")
+    time.sleep(1)
+
+    clear_screen()
+
+    write_text("2028",300,100,40,"bold")
+    time.sleep(2)
+
+    clear_screen()
+
+    write_text("JEE ADVANCED 2028",0,120,40,"bold")
+
+    draw_prisha(0,-100)
+
+    write_text("Ready!",5,-230,30,"bold")
+
+    time.sleep(3)
+
+#===================================
+#           SCENE 9
+#           RESULT
+#===================================
+
+def scene9():
+
+    clear_screen()
+
+    sound_result()
+
+    write_text("JEE ADVANCED 2028..",0,220,35,"bold")
+    time.sleep(2)
+    write_text("RESULT..",0,140,30)
+    time.sleep(2)
+    write_text("RANK: ???",0,30,55,"bold")
+    time.sleep(3)
+
+    clear_screen()
+    write_text("MY STORY DOESN'T END HERE...",0,70,30,"bold")
+
+    time.sleep(3)
+
+#============================================
+#               FINAL SCENE
+#============================================
+
+def final_scene():
+
+    clear_screen()
+
+    final_scene
+
+    # stars
+    for x in range(-450,451,90):
+
+        circle(x,250,3,"white")
+
+    write_text("PRISHA",0,120,65,"bold")
+    write_text("LOADING...",0,40,35)
+
+    draw_prisha(0,-150)
+
+    write_text("Every version of me brought me here...",30,-280,24)
+    time.sleep(4)
+    clear_screen()
+
+    write_text("BACK TO PRESENT: ",-10,100,24,"bold")
+    time.sleep(2)
+    write_text("Prisha get up for school!",-10,-50,24)
+    time.sleep(2)
+    write_text("Coming!",-10,-150,24)
+    time.sleep(3)
+
+    clear_screen()
+
+    stop_sound()
+
+#========================================
+#           PLAY THE MOVIE
+#========================================
+
+scene1()
+scene2()
+scene3()
+scene4()
+scene5()
+scene6()
+scene7()
+scene8()
+scene9()
+final_scene()
+
+stop_sound()
+
+screen.mainloop()
